@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Model
 {
     using System;
@@ -24,5 +26,26 @@ namespace Model
         public string Descripcion { get; set; }
 
         public int Orden { get; set; }
+
+        public List<TablaDato> Listar(string relacion)
+        {
+            var datos = new List<TablaDato>();
+
+            try
+            {
+                using (var ctx = new PortafolioContext())
+                {
+                    datos = ctx.TablaDato.OrderBy(x => x.Orden)
+                        .Where(x => x.Relacion == relacion)
+                        .ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            return datos;
+        }
     }
 }
